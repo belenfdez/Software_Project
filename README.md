@@ -55,12 +55,12 @@ allure serve build/allure-results/
 
 ```
 src/test/java/com/testautomation/
-├── config/          # Configuration files
-├── helpers/         # RequestSpecFactory, DriverFactory, etc
-├── pojos/           # Data models
-├── services/        # API and UI services
-├── tests/           # Test classes
-└── ui/pages/        # Page objects
+├── config/          
+├── helpers/         
+├── pojos/           
+├── services/        
+├── tests/           
+└── ui/pages/        
 ```
 
 ## Configuration
@@ -87,5 +87,6 @@ readTimeout=5000
 
 ---
 
-**Belén Fernández** - ERASMUS Course Project
+**Belén Fernández** -   Software Project
+https://github.com/belenfdez/Software_Project
 

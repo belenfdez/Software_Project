@@ -1,9 +1,9 @@
 package com.testautomation.services;
 
 import com.testautomation.helpers.RequestSpecFactory;
-import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
+import io.restassured.response.Response;
 
 public class PaymentService {
 

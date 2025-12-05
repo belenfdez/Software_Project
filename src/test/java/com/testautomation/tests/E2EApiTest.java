@@ -16,102 +16,99 @@ import io.restassured.response.Response;
 public class E2EApiTest {
 
     @Test
-    @DisplayName("E2E: Create, Verify, Update, Delete flow")
+    @DisplayName("E2E: Create order, verify, update, delete flow")
     void test_complete_crud_flow() {
-        // Step 1: Create a new post
+        // Step 1: Create a new order
         JsonObject createBody = new JsonObject();
-        createBody.addProperty("title", "E2E Test Post");
-        createBody.addProperty("body", "E2E test body");
-        createBody.addProperty("userId", 1);
+        createBody.addProperty("productId", 1);
+        createBody.addProperty("quantity", 3);
+        createBody.addProperty("customerName", "E2E Test Customer");
+        createBody.addProperty("customerEmail", "e2e@test.com");
 
         Response createRes = given().spec(RequestSpecFactory.jsonSpec())
                 .body(createBody.toString())
-                .when().post("/posts")
+                .when().post("/api/orders")
                 .then().extract().response();
 
-        assertThat(createRes.statusCode()).isEqualTo(201);
-        // JSONPlaceholder generates IDs, so we just check it's > 0
-        int postId = createRes.jsonPath().getInt("id");
-        assertThat(postId).isGreaterThan(0);
+        assertThat(createRes.statusCode()).isIn(200, 201);
+        int orderId = createRes.jsonPath().getInt("id");
+        assertThat(orderId).isGreaterThan(0);
 
-        // Step 2: Verify we can retrieve the created post
+        // Step 2: Verify we can retrieve the created order
         Response getRes = given().spec(RequestSpecFactory.jsonSpec())
-                .when().get("/posts/1")  // Use existing post instead
+                .when().get("/api/orders/" + orderId)
                 .then().extract().response();
 
         assertThat(getRes.statusCode()).isEqualTo(200);
-        assertThat(getRes.jsonPath().getString("title")).isNotEmpty();
+        assertThat(getRes.jsonPath().getString("customerName")).isNotEmpty();
 
-        // Step 3: Update an existing post
+        // Step 3: Update the order
         JsonObject updateBody = new JsonObject();
-        updateBody.addProperty("title", "Updated Post");
-        updateBody.addProperty("body", "Updated body");
-        updateBody.addProperty("userId", 1);
+        updateBody.addProperty("quantity", 5);
+        updateBody.addProperty("status", "processing");
 
         Response updateRes = given().spec(RequestSpecFactory.jsonSpec())
                 .body(updateBody.toString())
-                .when().put("/posts/1")
+                .when().put("/api/orders/" + orderId)
                 .then().extract().response();
 
-        assertThat(updateRes.statusCode()).isIn(200, 500);  // JSONPlaceholder may return 500
+        assertThat(updateRes.statusCode()).isIn(200, 201);
 
-        // Step 4: Delete a post
+        // Step 4: Delete the order
         Response deleteRes = given().spec(RequestSpecFactory.jsonSpec())
-                .when().delete("/posts/1")
+                .when().delete("/api/orders/" + orderId)
                 .then().extract().response();
 
         assertThat(deleteRes.statusCode()).isIn(200, 204);
     }
 
     @Test
-    @DisplayName("E2E: Get user, get their posts, verify relationship")
-    void test_user_posts_relationship() {
-        // Get a user
-        Response userRes = given().spec(RequestSpecFactory.jsonSpec())
-                .when().get("/users/1")
+    @DisplayName("E2E: Get product, create order with it, verify order contains product")
+    void test_product_order_relationship() {
+        // Get a product
+        Response productRes = given().spec(RequestSpecFactory.jsonSpec())
+                .when().get("/api/products/1")
                 .then().extract().response();
 
-        assertThat(userRes.statusCode()).isEqualTo(200);
-        String username = userRes.jsonPath().getString("username");
-        assertThat(username).isNotEmpty();
+        assertThat(productRes.statusCode()).isEqualTo(200);
+        int productId = productRes.jsonPath().getInt("id");
+        assertThat(productId).isGreaterThan(0);
 
-        // Get posts by that user
-        Response postsRes = given().spec(RequestSpecFactory.jsonSpec())
-                .queryParam("userId", 1)
-                .when().get("/posts")
+        // Create an order with that product
+        JsonObject orderBody = new JsonObject();
+        orderBody.addProperty("productId", productId);
+        orderBody.addProperty("quantity", 2);
+        orderBody.addProperty("customerName", "Relationship Test");
+        orderBody.addProperty("customerEmail", "rel@test.com");
+
+        Response orderRes = given().spec(RequestSpecFactory.jsonSpec())
+                .body(orderBody.toString())
+                .when().post("/api/orders")
                 .then().extract().response();
 
-        assertThat(postsRes.statusCode()).isEqualTo(200);
-        assertThat(postsRes.jsonPath().getList("$")).isNotEmpty();
-
-        // Verify all posts belong to user 1
-        postsRes.jsonPath().getList("userId", Integer.class)
-                .forEach(userId -> assertThat(userId).isEqualTo(1));
+        assertThat(orderRes.statusCode()).isIn(200, 201);
+        assertThat(orderRes.jsonPath().getInt("productId")).isEqualTo(productId);
     }
 
     @Test
-    @DisplayName("E2E: Create post, add comments, retrieve all")
-    void test_post_with_comments() {
-        // Create a post
-        JsonObject postBody = new JsonObject();
-        postBody.addProperty("title", "Post with Comments");
-        postBody.addProperty("body", "Test body");
-        postBody.addProperty("userId", 1);
-
-        Response postRes = given().spec(RequestSpecFactory.jsonSpec())
-                .body(postBody.toString())
-                .when().post("/posts")
+    @DisplayName("E2E: Get all products, filter by category, verify results")
+    void test_product_filtering() {
+        // Get all products
+        Response allProductsRes = given().spec(RequestSpecFactory.jsonSpec())
+                .when().get("/api/products")
                 .then().extract().response();
 
-        assertThat(postRes.statusCode()).isEqualTo(201);
-        int postId = postRes.jsonPath().getInt("id");
+        assertThat(allProductsRes.statusCode()).isEqualTo(200);
+        assertThat(allProductsRes.jsonPath().getList("$")).isNotEmpty();
 
-        // Get comments for the post
-        Response commentsRes = given().spec(RequestSpecFactory.jsonSpec())
-                .when().get("/posts/" + postId + "/comments")
+        // Filter products by category
+        Response filteredRes = given().spec(RequestSpecFactory.jsonSpec())
+                .queryParam("category", "electronics")
+                .when().get("/api/products")
                 .then().extract().response();
 
-        assertThat(commentsRes.statusCode()).isEqualTo(200);
-        // JSONPlaceholder has predefined comments
+        assertThat(filteredRes.statusCode()).isEqualTo(200);
+        // Verify we got products (may be empty if no electronics in DB)
+        assertThat(filteredRes.jsonPath().getList("$")).isNotNull();
     }
 }

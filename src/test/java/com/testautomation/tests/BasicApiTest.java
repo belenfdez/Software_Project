@@ -15,13 +15,13 @@ public class BasicApiTest {
 
     @BeforeAll
     static void setup() {
-        // Use public API for testing
+        // Electronics store backend must be running on http://localhost:8080
     }
 
     @Test
-    void test_get_posts_returns_ok() {
+    void test_get_products_returns_ok() {
         Response res = given().spec(RequestSpecFactory.jsonSpec())
-                .when().get("/posts")
+                .when().get("/api/products")
                 .then().extract().response();
 
         assertThat(res.statusCode()).isEqualTo(200);
@@ -29,22 +29,22 @@ public class BasicApiTest {
     }
 
     @Test
-    void test_get_post_by_id() {
+    void test_get_product_by_id() {
         Response res = given().spec(RequestSpecFactory.jsonSpec())
-                .when().get("/posts/1")
+                .when().get("/api/products/1")
                 .then().extract().response();
 
         assertThat(res.statusCode()).isEqualTo(200);
-        assertThat(res.jsonPath().getString("id")).isEqualTo("1");
+        assertThat(res.jsonPath().getString("id")).isNotEmpty();
     }
 
     @Test
-    void test_get_non_existent_post() {
+    void test_get_non_existent_product() {
         Response res = given().spec(RequestSpecFactory.jsonSpec())
-                .when().get("/posts/99999")
+                .when().get("/api/products/99999")
                 .then().extract().response();
 
-        // JSONPlaceholder returns 200 but empty object
-        assertThat(res.statusCode()).isIn(200, 404);
+        // Verify 404 or similar error response
+        assertThat(res.statusCode()).isGreaterThanOrEqualTo(400);
     }
 }

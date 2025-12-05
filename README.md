@@ -1,105 +1,105 @@
 # API & UI Testing Automation Suite
 
-Proyecto de automatización de testing completo con cobertura API y UI, reportes Allure e integración Jenkins CI/CD.
+Complete testing automation project with API and UI coverage, Allure reporting, and Jenkins CI/CD integration.
 
-**Status:** ✅ 22 tests pasando (17 API + 9 UI - 4 skipped) | Allure reporting activo
+**Status:** ✅ 22 tests passing (17 API + 9 UI - 4 skipped) | Allure reporting active
 
 ---
 
-## 📋 Requisitos
+## 📋 Requirements
 
 - **Java 21+** (JDK)
-- **Gradle 8.0+** (incluido como wrapper)
-- **Firefox** (para tests UI con Selenium)
-- **Git** (para control de versiones)
-- **Jenkins** (opcional, para CI/CD)
+- **Gradle 8.0+** (included as wrapper)
+- **Firefox** (for UI tests with Selenium)
+- **Git** (for version control)
+- **Jenkins** (optional, for CI/CD)
 
-### Verificar requisitos
+### Verify Requirements
 
 ```bash
-java -version          # Debe ser Java 21
-./gradlew -version    # Verifica Gradle
-firefox --version     # Verifica Firefox
+java -version          # Must be Java 21
+./gradlew -version    # Verify Gradle
+firefox --version     # Verify Firefox
 ```
 
 ---
 
-## 🚀 Inicio Rápido
+## 🚀 Quick Start
 
-### 1. Clonar repositorio
+### 1. Clone Repository
 
 ```bash
 git clone https://github.com/belenfdez/Software_Project.git
 cd Software_Project/api-testing-demo-java_starter
 ```
 
-### 2. Compilar proyecto
+### 2. Build Project
 
 ```bash
 ./gradlew clean build -x test
 ```
 
-### 3. Ejecutar tests
+### 3. Run Tests
 
 ```bash
-# Todos los tests
+# All tests
 ./gradlew test
 
-# Solo API tests
+# API tests only
 ./gradlew test -Ptag=api
 
-# Solo UI tests
+# UI tests only
 ./gradlew test -Ptag=ui
 ```
 
-### 4. Ver reportes Allure
+### 4. View Allure Reports
 
 ```bash
 allure serve build/allure-results/
 ```
 
-Se abrirá en http://localhost:4040 automáticamente.
+Opens automatically at http://localhost:4040.
 
 ---
 
-## 📁 Estructura del Proyecto
+## 📁 Project Structure
 
 ```
 src/test/java/com/testautomation/
 ├── config/
-│   └── Config.java                 # Gestión centralizada de configuración
+│   └── Config.java                 # Centralized configuration management
 ├── helpers/
-│   ├── RequestSpecFactory.java     # Especificación REST con Allure
-│   ├── DriverFactory.java          # Gestor de WebDriver Firefox
-│   └── AllureTestWatcher.java      # Captura de screenshots en fallos
+│   ├── RequestSpecFactory.java     # REST specification with Allure
+│   ├── DriverFactory.java          # WebDriver Firefox manager
+│   └── AllureTestWatcher.java      # Screenshots capture on failures
 ├── pojos/
-│   └── *.java                      # Modelos de datos (User, Post, etc.)
+│   └── *.java                      # Data models (User, Post, etc.)
 ├── services/
-│   └── ProductService.java         # Orquestación de llamadas API
+│   └── ProductService.java         # API call orchestration
 ├── ui/
 │   └── pages/
-│       ├── BasePage.java           # Clase base con helpers Selenium
-│       ├── LoginPage.java          # POM para página de login
-│       ├── InventoryPage.java      # POM para inventario
-│       ├── CartPage.java           # POM para carrito
-│       └── CheckoutPage.java       # POM para checkout
+│       ├── BasePage.java           # Base class with Selenium helpers
+│       ├── LoginPage.java          # POM for login page
+│       ├── InventoryPage.java      # POM for inventory
+│       ├── CartPage.java           # POM for shopping cart
+│       └── CheckoutPage.java       # POM for checkout
 └── tests/
-    ├── BasicApiTest.java           # Tests GET básicos
-    ├── CrudApiTest.java            # Tests CRUD completos
-    ├── NegativeApiTest.java        # Tests de casos negativos
-    ├── E2EApiTest.java             # Tests end-to-end API
+    ├── BasicApiTest.java           # Basic GET tests
+    ├── CrudApiTest.java            # Complete CRUD tests
+    ├── NegativeApiTest.java        # Negative test cases
+    ├── E2EApiTest.java             # End-to-end API tests
     └── ui/
-        ├── SauceDemoLoginUITest.java      # Tests login UI
-        └── SauceDemoE2ETest.java          # Tests E2E UI (purchase flow)
+        ├── SauceDemoLoginUITest.java      # Login UI tests
+        └── SauceDemoE2ETest.java          # E2E UI tests (purchase flow)
 ```
 
 ---
 
-## 🧪 Cobertura de Tests
+## 🧪 Test Coverage
 
-### Tests API (17 tests - JSONPlaceholder)
+### API Tests (17 tests - JSONPlaceholder)
 
-| Suite | Tests | Descripción |
+| Suite | Tests | Description |
 |-------|-------|-------------|
 | **BasicApiTest** | 3 | GET list, GET by ID, 404 handling |
 | **CrudApiTest** | 6 | Create, Read, Update, Delete, Filter |
@@ -108,22 +108,22 @@ src/test/java/com/testautomation/
 
 **Base URL:** https://jsonplaceholder.typicode.com
 
-### Tests UI (9 tests - SauceDemo)
+### UI Tests (9 tests - SauceDemo)
 
-| Suite | Tests | Descripción |
+| Suite | Tests | Description |
 |-------|-------|-------------|
-| **SauceDemoLoginUITest** | 6 | Login válido/inválido, credenciales vacías |
-| **SauceDemoE2ETest** | 3 | Flujo completo compra, múltiples productos |
+| **SauceDemoLoginUITest** | 6 | Valid/invalid login, empty credentials |
+| **SauceDemoE2ETest** | 3 | Complete purchase flow, multiple products |
 
 **Base URL:** https://www.saucedemo.com
 
 ---
 
-## 🔧 Configuración
+## 🔧 Configuration
 
-### Cambiar entorno
+### Change Environment
 
-Editar `src/test/resources/env/dev.properties` o `qa.properties`:
+Edit `src/test/resources/env/dev.properties` or `qa.properties`:
 
 ```properties
 baseUri=https://jsonplaceholder.typicode.com
@@ -131,7 +131,7 @@ connectTimeout=5000
 readTimeout=5000
 ```
 
-Ejecutar con env específico:
+Run with specific environment:
 
 ```bash
 ./gradlew test -Denv=qa
@@ -141,22 +141,22 @@ Ejecutar con env específico:
 
 ## 📊 Allure Reporting
 
-### Características
+### Features
 
-- ✅ Captura de pantallas en fallos UI
-- ✅ Logs de requests/responses API
-- ✅ Pasos detallados (@Step annotations)
-- ✅ Categorización por tags (API/UI)
-- ✅ Timeline de ejecución
+- ✅ Screenshots on UI test failures
+- ✅ API request/response logs
+- ✅ Detailed execution steps (@Step annotations)
+- ✅ Test categorization by tags (API/UI)
+- ✅ Execution timeline
 
-### Generar reporte
+### Generate Report
 
 ```bash
 ./gradlew test
 allure serve build/allure-results/
 ```
 
-### Limpiar reportes anteriores
+### Clear Previous Reports
 
 ```bash
 ./gradlew clean
@@ -164,95 +164,95 @@ allure serve build/allure-results/
 
 ---
 
-## 🔌 Integración Jenkins
+## 🔌 Jenkins Integration
 
-### Requisitos Jenkins
+### Jenkins Requirements
 
-1. Instalar plugins:
+1. Install plugins:
    - Allure Plugin
    - JUnit Plugin
    - Pipeline
 
-2. Crear pipeline declarativo:
+2. Create declarative pipeline:
    - Source: GitHub (Software_Project)
    - Script path: `Jenkinsfile`
 
-### Ejecutar pipeline
+### Run Pipeline
 
 ```groovy
-// En Jenkins UI:
+// In Jenkins UI:
 // 1. New Job → Pipeline
 // 2. Pipeline → Pipeline script from SCM
 // 3. Git → https://github.com/belenfdez/Software_Project.git
 // 4. Build
 ```
 
-### Acceso a reportes Jenkins
+### Access Reports in Jenkins
 
 - Test Results: `Job → Test Result Trend`
 - Allure Report: `Job → Allure Report`
 
 ---
 
-## 📝 Casos de Uso
+## 📝 Use Cases
 
 ### API Testing (JSONPlaceholder)
 
 ```bash
-# Verificar todos los posts
+# Verify all posts
 ./gradlew test -Ptag=api
 
-# Flujo esperado: GET /posts → POST /posts → PUT /posts/1 → DELETE /posts/1
+# Expected flow: GET /posts → POST /posts → PUT /posts/1 → DELETE /posts/1
 ```
 
 ### UI Testing (SauceDemo)
 
 ```bash
-# Verificar flujo completo de compra
+# Verify complete purchase flow
 ./gradlew test -Ptag=ui
 
-# Credenciales de prueba:
-# - Usuario: standard_user
-# - Contraseña: secret_sauce
+# Test credentials:
+# - Username: standard_user
+# - Password: secret_sauce
 ```
 
 ---
 
 ## 🛠️ Troubleshooting
 
-### Tests UI lentos
+### Slow UI Tests
 
-Firefox se ejecuta en modo headless (sin interfaz gráfica). Para debug:
-- Editar `DriverFactory.java` y comentar `options.setHeadless(true);`
+Firefox runs in headless mode (without GUI). For debugging:
+- Edit `DriverFactory.java` and comment `options.setHeadless(true);`
 
-### Allure report no genera
+### Allure Report Not Generating
 
 ```bash
-# Limpiar caché y regenerar
+# Clean cache and regenerate
 ./gradlew clean test
 allure generate build/allure-results/ -o build/allure-report/
 allure open build/allure-report/
 ```
 
-### Conflicto de puertos Jenkins
+### Jenkins Port Conflict
 
-Por defecto Jenkins corre en puerto 8080. Si está ocupado:
+Jenkins runs on port 8080 by default. If occupied:
 
 ```bash
 sudo systemctl stop jenkins
-# O ejecutar en puerto diferente:
+# Or run on different port:
 java -jar jenkins.war --httpPort=8888
 ```
 
 ---
 
-## 📈 Métricas
+## 📈 Metrics
 
-| Métrica | Valor |
-|---------|-------|
-| Tests totales | 22 |
-| Tasa de cobertura | ~80% código crítico |
-| Tiempo ejecución | ~45 segundos |
+| Metric | Value |
+|--------|-------|
+| Total tests | 22 |
+| Coverage rate | ~80% critical code |
+| Execution time | ~45 seconds |
 | Broken links | 0 |
 
 ---
@@ -260,25 +260,25 @@ java -jar jenkins.war --httpPort=8888
 ## 🔄 Git Workflow
 
 ```bash
-# Crear rama feature
+# Create feature branch
 git checkout -b feature/new-test-suite
 
-# Hacer cambios y commit
+# Make changes and commit
 git add .
 git commit -m "feat: add new test suite"
 
-# Push a GitHub
+# Push to GitHub
 git push origin feature/new-test-suite
 
-# Crear Pull Request en GitHub UI
+# Create Pull Request in GitHub UI
 ```
 
 ---
 
-## 📚 Tecnologías
+## 📚 Technologies
 
-| Stack | Herramienta | Versión |
-|-------|------------|---------|
+| Stack | Tool | Version |
+|-------|------|---------|
 | **Java** | OpenJDK | 21+ |
 | **Build** | Gradle | 8.14 |
 | **Test Framework** | JUnit 5 | 5.11.3 |
@@ -292,25 +292,25 @@ git push origin feature/new-test-suite
 
 ---
 
-## 👤 Autor
+## 👤 Author
 
 **Belén Fernández**  
-Proyecto ERASMUS - Software Testing Automation  
+ERASMUS Project - Software Testing Automation  
 [GitHub](https://github.com/belenfdez/Software_Project)
 
 ---
 
-## 📄 Licencia
+## 📄 License
 
-Proyecto académico - 2024
+Academic Project - 2024
 
 ---
 
-## 🎯 Roadmap Futuro
+## 🎯 Future Roadmap
 
-- [ ] Integración con base de datos real
-- [ ] Tests de performance (JMeter)
-- [ ] Cobertura de código (JaCoCo)
+- [ ] Real database integration
+- [ ] Performance testing (JMeter)
+- [ ] Code coverage (JaCoCo)
 - [ ] Docker integration
-- [ ] API mocking con Wiremock
+- [ ] API mocking with Wiremock
 - [ ] Mobile testing (Appium)

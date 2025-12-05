@@ -1,14 +1,21 @@
 package com.testautomation.tests;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+
 import com.google.gson.Gson;
 import com.testautomation.config.Config;
 import com.testautomation.pojos.Product;
 import com.testautomation.services.ProductService;
+
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.*;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @Disabled("Using JSONPlaceholder API instead - backend API requires authentication")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

@@ -1,18 +1,15 @@
 # API & UI Testing Automation Suite
 
 Complete testing automation project with API and UI coverage, Allure reporting, and Jenkins CI/CD integration.
-
-**Status:** ✅ 22 tests passing (17 API + 9 UI - 4 skipped) | Allure reporting active
-
 ---
 
 ## 📋 Requirements
 
-- **Java 21+** (JDK)
-- **Gradle 8.0+** (included as wrapper)
-- **Firefox** (for UI tests with Selenium)
-- **Git** (for version control)
-- **Jenkins** (optional, for CI/CD)
+- **Java 21+** 
+- **Gradle 8.0+** 
+- **Firefox**
+- **Git** 
+- **Jenkins** 
 
 ### Verify Requirements
 
@@ -24,7 +21,7 @@ firefox --version     # Verify Firefox
 
 ---
 
-## 🚀 Quick Start
+## To start
 
 ### 1. Clone Repository
 
@@ -62,51 +59,20 @@ Opens automatically at http://localhost:4040.
 
 ---
 
-## 📁 Project Structure
-
-```
-src/test/java/com/testautomation/
-├── config/
-│   └── Config.java                 # Centralized configuration management
-├── helpers/
-│   ├── RequestSpecFactory.java     # REST specification with Allure
-│   ├── DriverFactory.java          # WebDriver Firefox manager
-│   └── AllureTestWatcher.java      # Screenshots capture on failures
-├── pojos/
-│   └── *.java                      # Data models (User, Post, etc.)
-├── services/
-│   └── ProductService.java         # API call orchestration
-├── ui/
-│   └── pages/
-│       ├── BasePage.java           # Base class with Selenium helpers
-│       ├── LoginPage.java          # POM for login page
-│       ├── InventoryPage.java      # POM for inventory
-│       ├── CartPage.java           # POM for shopping cart
-│       └── CheckoutPage.java       # POM for checkout
-└── tests/
-    ├── BasicApiTest.java           # Basic GET tests
-    ├── CrudApiTest.java            # Complete CRUD tests
-    ├── NegativeApiTest.java        # Negative test cases
-    ├── E2EApiTest.java             # End-to-end API tests
-    └── ui/
-        ├── SauceDemoLoginUITest.java      # Login UI tests
-        └── SauceDemoE2ETest.java          # E2E UI tests (purchase flow)
-```
-
----
 
 ## 🧪 Test Coverage
 
-### API Tests (17 tests - JSONPlaceholder)
+### API Tests (17 tests - Electronics Store Backend)
 
 | Suite | Tests | Description |
 |-------|-------|-------------|
 | **BasicApiTest** | 3 | GET list, GET by ID, 404 handling |
 | **CrudApiTest** | 6 | Create, Read, Update, Delete, Filter |
 | **NegativeApiTest** | 5 | 404s, invalid payloads, malformed JSON |
-| **E2EApiTest** | 3 | User-posts flow, complete CRUD chain |
+| **E2EApiTest** | 3 | Product-orders flow, complete CRUD chain |
 
-**Base URL:** https://jsonplaceholder.typicode.com
+**Base URL:** http://localhost:8080/api
+**Backend:** electronics-store-0.0.1-SNAPSHOT.jar (must be running)
 
 ### UI Tests (9 tests - SauceDemo)
 
@@ -119,7 +85,7 @@ src/test/java/com/testautomation/
 
 ---
 
-## 🔧 Configuration
+## Configuration
 
 ### Change Environment
 
@@ -139,15 +105,8 @@ Run with specific environment:
 
 ---
 
-## 📊 Allure Reporting
+## Allure Reporting
 
-### Features
-
-- ✅ Screenshots on UI test failures
-- ✅ API request/response logs
-- ✅ Detailed execution steps (@Step annotations)
-- ✅ Test categorization by tags (API/UI)
-- ✅ Execution timeline
 
 ### Generate Report
 
@@ -164,7 +123,7 @@ allure serve build/allure-results/
 
 ---
 
-## 🔌 Jenkins Integration
+## Jenkins Integration
 
 ### Jenkins Requirements
 
@@ -196,13 +155,16 @@ allure serve build/allure-results/
 
 ## 📝 Use Cases
 
-### API Testing (JSONPlaceholder)
+### API Testing (Electronics Store Backend)
 
 ```bash
-# Verify all posts
+# Verify backend is running first
+java -jar electronics-store-0.0.1-SNAPSHOT.jar &
+
+# Then run API tests
 ./gradlew test -Ptag=api
 
-# Expected flow: GET /posts → POST /posts → PUT /posts/1 → DELETE /posts/1
+# Expected flow: GET /api/products → POST /api/orders → PUT /api/orders/{id} → DELETE /api/orders/{id}
 ```
 
 ### UI Testing (SauceDemo)

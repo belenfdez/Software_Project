@@ -3,7 +3,7 @@
 Complete testing automation project with API and UI coverage, Allure reporting, and Jenkins CI/CD integration.
 ---
 
-## 📋 Requirements
+## Requirements
 
 - **Java 21+** 
 - **Gradle 8.0+** 
@@ -60,9 +60,9 @@ Opens automatically at http://localhost:4040.
 ---
 
 
-## 🧪 Test Coverage
+## Test Coverage
 
-### API Tests (17 tests - Electronics Store Backend)
+### API Tests 
 
 | Suite | Tests | Description |
 |-------|-------|-------------|
@@ -72,9 +72,9 @@ Opens automatically at http://localhost:4040.
 | **E2EApiTest** | 3 | Product-orders flow, complete CRUD chain |
 
 **Base URL:** http://localhost:8080/api
-**Backend:** electronics-store-0.0.1-SNAPSHOT.jar (must be running)
+**Backend:** electronics-store-0.0.1-SNAPSHOT.jar 
 
-### UI Tests (9 tests - SauceDemo)
+### UI Tests 
 
 | Suite | Tests | Description |
 |-------|-------|-------------|
@@ -153,7 +153,7 @@ allure serve build/allure-results/
 
 ---
 
-## 📝 Use Cases
+## Use Cases
 
 ### API Testing (Electronics Store Backend)
 
@@ -180,7 +180,7 @@ java -jar electronics-store-0.0.1-SNAPSHOT.jar &
 
 ---
 
-## 🛠️ Troubleshooting
+##  Troubleshooting
 
 ### Slow UI Tests
 
@@ -208,18 +208,7 @@ java -jar jenkins.war --httpPort=8888
 
 ---
 
-## 📈 Metrics
-
-| Metric | Value |
-|--------|-------|
-| Total tests | 22 |
-| Coverage rate | ~80% critical code |
-| Execution time | ~45 seconds |
-| Broken links | 0 |
-
----
-
-## 🔄 Git Workflow
+##  Git Workflow
 
 ```bash
 # Create feature branch
@@ -237,42 +226,9 @@ git push origin feature/new-test-suite
 
 ---
 
-## 📚 Technologies
-
-| Stack | Tool | Version |
-|-------|------|---------|
-| **Java** | OpenJDK | 21+ |
-| **Build** | Gradle | 8.14 |
-| **Test Framework** | JUnit 5 | 5.11.3 |
-| **API Testing** | RestAssured | 5.5.0 |
-| **UI Testing** | Selenium | 4.25.0 |
-| **WebDriver** | WebDriverManager | 5.9.2 |
-| **Reporting** | Allure | 2.29.0 |
-| **Assertions** | AssertJ | 3.26.3 |
-| **Mocking** | Mockito | 5.14.2 |
-| **Logging** | SLF4J | 2.0.16 |
-
----
-
-## 👤 Author
+## Author
 
 **Belén Fernández**  
 ERASMUS Project - Software Testing Automation  
 [GitHub](https://github.com/belenfdez/Software_Project)
 
----
-
-## 📄 License
-
-Academic Project - 2024
-
----
-
-## 🎯 Future Roadmap
-
-- [ ] Real database integration
-- [ ] Performance testing (JMeter)
-- [ ] Code coverage (JaCoCo)
-- [ ] Docker integration
-- [ ] API mocking with Wiremock
-- [ ] Mobile testing (Appium)

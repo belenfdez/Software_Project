@@ -1,0 +1,4 @@
+allure:
+  title: API Testing Demo
+  description: Automated test suite for API and UI testing
+  logo: https://qameta.io/allure/assets/images/allure-logo-white.svg

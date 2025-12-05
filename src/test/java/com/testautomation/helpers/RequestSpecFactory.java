@@ -1,12 +1,13 @@
 package com.testautomation.helpers;
 
 import com.testautomation.config.Config;
+
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
+import static io.restassured.config.HttpClientConfig.httpClientConfig;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.specification.RequestSpecification;
-
-import static io.restassured.config.HttpClientConfig.httpClientConfig;
 
 public final class RequestSpecFactory {
     private RequestSpecFactory() {}
@@ -25,6 +26,7 @@ public final class RequestSpecFactory {
                 .setConfig(cfg)
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
+                .addFilter(new AllureRestAssured())
                 .log(LogDetail.METHOD)
                 .log(LogDetail.URI)
                 .log(LogDetail.BODY)

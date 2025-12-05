@@ -7,6 +7,7 @@ public class LoginPage extends BasePage {
     private static final By USERNAME = By.id("user-name");
     private static final By PASSWORD = By.id("password");
     private static final By LOGIN_BUTTON = By.id("login-button");
+    private static final By ERROR_MESSAGE = By.cssSelector("[data-test='error']");
 
     public LoginPage(WebDriver driver) {
         super(driver);
@@ -17,8 +18,19 @@ public class LoginPage extends BasePage {
     }
 
     public void login(String user, String pass) {
-        driver.findElement(USERNAME).sendKeys(user);
-        driver.findElement(PASSWORD).sendKeys(pass);
-        driver.findElement(LOGIN_BUTTON).click();
+        sendKeys(USERNAME, user);
+        sendKeys(PASSWORD, pass);
+        clickElement(LOGIN_BUTTON);
+    }
+
+    public boolean hasErrorMessage() {
+        return isElementPresent(ERROR_MESSAGE);
+    }
+
+    public String getErrorMessage() {
+        if (hasErrorMessage()) {
+            return getText(ERROR_MESSAGE);
+        }
+        return "";
     }
 }

@@ -21,6 +21,14 @@ dependencies {
     testImplementation 'io.rest-assured:rest-assured:5.5.0'
     testImplementation 'org.assertj:assertj-core:3.26.3'
     testImplementation 'org.mockito:mockito-core:5.14.2'
+
+    // UI testing stack
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.25.0'
+    testImplementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
+
+    // Reporting / logging
+    testImplementation 'io.qameta.allure:allure-junit5:2.29.0'
+    testImplementation 'org.slf4j:slf4j-simple:2.0.16'
 }
 
 test {
@@ -28,4 +36,14 @@ test {
     testLogging {
         events "PASSED", "FAILED", "SKIPPED"
     }
+
+    // Allow running specific suites: ./gradlew test -Ptag=ui
+    if (project.hasProperty('tag')) {
+        useJUnitPlatform {
+            includeTags project.property('tag')
+        }
+    }
+
+    // Pass env to tests: ./gradlew test -Denv=qa
+    systemProperty 'env', System.getProperty('env', project.findProperty('env') ?: 'dev')
 }

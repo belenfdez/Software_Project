@@ -1,0 +1,25 @@
+# Gradle
+.gradle/
+build/
+out/
+
+# IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Reports / results
+allure-results/
+allure-report/
+
+# Others
+*.class

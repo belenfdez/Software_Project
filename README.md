@@ -1,234 +1,91 @@
-# API & UI Testing Automation Suite
+# API & UI Testing Automation
 
-Complete testing automation project with API and UI coverage, Allure reporting, and Jenkins CI/CD integration.
----
+Testing automation project for university course. Includes API tests and UI tests with Allure reporting.
 
-## Requirements
+## What you need
 
-- **Java 21+** 
-- **Gradle 8.0+** 
-- **Firefox**
-- **Git** 
-- **Jenkins** 
+- Java 21
+- Gradle 8.0+
+- Firefox
+- Git
 
-### Verify Requirements
+## How to run
 
-```bash
-java -version          # Must be Java 21
-./gradlew -version    # Verify Gradle
-firefox --version     # Verify Firefox
-```
-
----
-
-## To start
-
-### 1. Clone Repository
+### First time setup
 
 ```bash
 git clone https://github.com/belenfdez/Software_Project.git
 cd Software_Project/api-testing-demo-java_starter
-```
-
-### 2. Build Project
-
-```bash
 ./gradlew clean build -x test
 ```
 
-### 3. Run Tests
+### Run the tests
 
 ```bash
 # All tests
 ./gradlew test
 
-# API tests only
+# Only API tests
 ./gradlew test -Ptag=api
 
-# UI tests only
+# Only UI tests  
 ./gradlew test -Ptag=ui
 ```
 
-### 4. View Allure Reports
+### View the report
 
 ```bash
 allure serve build/allure-results/
 ```
 
-Opens automatically at http://localhost:4040.
+## What's tested
 
----
+**API tests:** 17 tests against electronics-store backend (http://localhost:8080/api)
+- Basic GET requests
+- CRUD operations on orders
+- Error handling
+- End-to-end flows
 
+**UI tests:** 9 tests on https://www.saucedemo.com
+- Login functionality
+- Shopping flows
+- Cart operations
 
-## Test Coverage
+## Project structure
 
-### API Tests 
-
-| Suite | Tests | Description |
-|-------|-------|-------------|
-| **BasicApiTest** | 3 | GET list, GET by ID, 404 handling |
-| **CrudApiTest** | 6 | Create, Read, Update, Delete, Filter |
-| **NegativeApiTest** | 5 | 404s, invalid payloads, malformed JSON |
-| **E2EApiTest** | 3 | Product-orders flow, complete CRUD chain |
-
-**Base URL:** http://localhost:8080/api
-**Backend:** electronics-store-0.0.1-SNAPSHOT.jar 
-
-### UI Tests 
-
-| Suite | Tests | Description |
-|-------|-------|-------------|
-| **SauceDemoLoginUITest** | 6 | Valid/invalid login, empty credentials |
-| **SauceDemoE2ETest** | 3 | Complete purchase flow, multiple products |
-
-**Base URL:** https://www.saucedemo.com
-
----
+```
+src/test/java/com/testautomation/
+├── config/          # Configuration files
+├── helpers/         # RequestSpecFactory, DriverFactory, etc
+├── pojos/           # Data models
+├── services/        # API and UI services
+├── tests/           # Test classes
+└── ui/pages/        # Page objects
+```
 
 ## Configuration
 
-### Change Environment
-
-Edit `src/test/resources/env/dev.properties` or `qa.properties`:
+API configuration is in `src/test/resources/env/dev.properties`
 
 ```properties
-baseUri=https://jsonplaceholder.typicode.com
+baseUri=http://localhost:8080/api
 connectTimeout=5000
 readTimeout=5000
 ```
 
-Run with specific environment:
+## Running on Jenkins
 
-```bash
-./gradlew test -Denv=qa
-```
+- Create a Pipeline job pointing to this repo
+- Script path: `Jenkinsfile`
+- Builds, runs tests, generates Allure report
 
----
+## Notes
 
-## Allure Reporting
-
-
-### Generate Report
-
-```bash
-./gradlew test
-allure serve build/allure-results/
-```
-
-### Clear Previous Reports
-
-```bash
-./gradlew clean
-```
+- Backend must be running for API tests: `java -jar electronics-store-0.0.1-SNAPSHOT.jar`
+- UI tests use Firefox in headless mode
+- Allure generates HTML reports in `build/allure-results/`
 
 ---
 
-## Jenkins Integration
-
-### Jenkins Requirements
-
-1. Install plugins:
-   - Allure Plugin
-   - JUnit Plugin
-   - Pipeline
-
-2. Create declarative pipeline:
-   - Source: GitHub (Software_Project)
-   - Script path: `Jenkinsfile`
-
-### Run Pipeline
-
-```groovy
-// In Jenkins UI:
-// 1. New Job → Pipeline
-// 2. Pipeline → Pipeline script from SCM
-// 3. Git → https://github.com/belenfdez/Software_Project.git
-// 4. Build
-```
-
-### Access Reports in Jenkins
-
-- Test Results: `Job → Test Result Trend`
-- Allure Report: `Job → Allure Report`
-
----
-
-## Use Cases
-
-### API Testing (Electronics Store Backend)
-
-```bash
-# Verify backend is running first
-java -jar electronics-store-0.0.1-SNAPSHOT.jar &
-
-# Then run API tests
-./gradlew test -Ptag=api
-
-# Expected flow: GET /api/products → POST /api/orders → PUT /api/orders/{id} → DELETE /api/orders/{id}
-```
-
-### UI Testing (SauceDemo)
-
-```bash
-# Verify complete purchase flow
-./gradlew test -Ptag=ui
-
-# Test credentials:
-# - Username: standard_user
-# - Password: secret_sauce
-```
-
----
-
-##  Troubleshooting
-
-### Slow UI Tests
-
-Firefox runs in headless mode (without GUI). For debugging:
-- Edit `DriverFactory.java` and comment `options.setHeadless(true);`
-
-### Allure Report Not Generating
-
-```bash
-# Clean cache and regenerate
-./gradlew clean test
-allure generate build/allure-results/ -o build/allure-report/
-allure open build/allure-report/
-```
-
-### Jenkins Port Conflict
-
-Jenkins runs on port 8080 by default. If occupied:
-
-```bash
-sudo systemctl stop jenkins
-# Or run on different port:
-java -jar jenkins.war --httpPort=8888
-```
-
----
-
-##  Git Workflow
-
-```bash
-# Create feature branch
-git checkout -b feature/new-test-suite
-
-# Make changes and commit
-git add .
-git commit -m "feat: add new test suite"
-
-# Push to GitHub
-git push origin feature/new-test-suite
-
-# Create Pull Request in GitHub UI
-```
-
----
-
-## Author
-
-**Belén Fernández**  
-ERASMUS Project - Software Testing Automation  
-[GitHub](https://github.com/belenfdez/Software_Project)
+**Belén Fernández** - ERASMUS Course Project
 
